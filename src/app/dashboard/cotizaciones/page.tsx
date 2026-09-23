@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 
 // React Hook Form and Zod
-import { useForm, useFieldArray, FormProvider } from 'react-hook-form'
+import { useForm, useFieldArray, FormProvider, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
@@ -105,6 +105,26 @@ export default function CompactQuotationPage() {
     },
   })
 
+  const watchedServicios = useWatch({
+    control: form.control,
+    name: 'servicios',
+  })
+
+  const watchedRepuestos = useWatch({
+    control: form.control,
+    name: 'repuestos',
+  })
+
+  const watchedDescuento = useWatch({
+    control: form.control,
+    name: 'descuento_porcentaje',
+  })
+
+  const watchedIva = useWatch({
+    control: form.control,
+    name: 'iva_porcentaje',
+  })
+
   const {
     fields: serviciosFields,
     append: appendServicio,
@@ -169,27 +189,31 @@ export default function CompactQuotationPage() {
   }, [servicioSearch, searchServicios])
 
   const calculateTotals = useMemo(() => {
-    const repuestosTotal = form
-      .watch('repuestos')
-      .reduce((acc, repuesto) => acc + repuesto.precio * repuesto.cantidad, 0)
-    const serviciosTotal = form
-      .watch('servicios')
-      .reduce((acc, servicio) => acc + servicio.precio, 0)
+    const repuestosTotal = watchedRepuestos.reduce(
+      (acc, repuesto) => acc + repuesto.precio * repuesto.cantidad,
+      0
+    )
+
+    const serviciosTotal = watchedServicios.reduce(
+      (acc, servicio) => acc + servicio.precio,
+      0
+    )
+
     const subtotalSinDescuento = repuestosTotal + serviciosTotal
-    const descuentoPorcentaje = form.watch('descuento_porcentaje')
-    const descuentoValor = (subtotalSinDescuento * descuentoPorcentaje) / 100
+    const descuentoValor =
+      (subtotalSinDescuento * (watchedDescuento || 0)) / 100
     const subtotal = subtotalSinDescuento - descuentoValor
-    const ivaPorcentaje = form.watch('iva_porcentaje')
-    const iva = (repuestosTotal * ivaPorcentaje) / 100
+    const iva = (repuestosTotal * (watchedIva || 0)) / 100
     const total = subtotal + iva
 
-    return { subtotalSinDescuento, descuentoValor, subtotal, iva, total }
-  }, [
-    form.watch('repuestos'),
-    form.watch('servicios'),
-    form.watch('descuento_porcentaje'),
-    form.watch('iva_porcentaje'),
-  ])
+    return {
+      subtotalSinDescuento,
+      descuentoValor,
+      subtotal,
+      iva,
+      total,
+    }
+  }, [watchedServicios, watchedRepuestos, watchedDescuento, watchedIva])
 
   useEffect(() => {
     form.setValue(
@@ -247,6 +271,7 @@ export default function CompactQuotationPage() {
           @media print {
             body * {
               visibility: hidden;
+              font-size: 12px;
             }
             .print-only,
             .print-only * {
@@ -669,7 +694,7 @@ export default function CompactQuotationPage() {
               </p>
             </div>
 
-            <table className="w-full mb-2 text-[8px] ">
+            <table className="w-full mb-2 text-[14px] ">
               <thead>
                 <tr className="border-b">
                   <th className="text-left ">Descripción</th>
@@ -706,7 +731,7 @@ export default function CompactQuotationPage() {
               </tbody>
             </table>
 
-            <div className="text-right text-[8px]">
+            <div className="text-right text-[14px]">
               <p>
                 <strong>Valor:</strong>{' '}
                 {formatCurrency(form.watch('subtotal_sin_descuento'))}
@@ -731,7 +756,7 @@ export default function CompactQuotationPage() {
             </div>
 
             {form.watch('observaciones') && (
-              <div className="mt-2 text-[8px]">
+              <div className="mt-2 text-[14px]">
                 <h3 className="font-semibold">Observaciones:</h3>
                 <p>{form.watch('observaciones')}</p>
               </div>
