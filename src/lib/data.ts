@@ -76,17 +76,23 @@ export async function fetchFilteredClientes(
   const data = await response.json();
   return data.clientes;
 }
-export async function fetchOneCliente(id: number): Promise<Cliente[]> {
+export async function fetchOneCliente(id: number): Promise<Cliente> {
   const response = await fetchWithToken(
     `${process.env.NEXT_PUBLIC_API_URL}/clientes/${id}`
-  );
+  )
 
   if (!response.ok) {
-    throw new Error("Error fetching cliente");
+    throw new Error('Error fetching cliente')
   }
 
-  const data = await response.json();
-  return data;
+  const data = await response.json()
+
+  return {
+    ...data,
+    motos_cliente: data.MotoCliente ?? [],
+    facturas: data.Factura ?? [],
+    ventas_directas: data.VentaDirecta ?? [],
+  }
 }
 
 export async function fetchMotosClientesPages(

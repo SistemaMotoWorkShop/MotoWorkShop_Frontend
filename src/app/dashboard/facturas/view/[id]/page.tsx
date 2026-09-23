@@ -34,7 +34,6 @@ import { COMPANY_INFO } from '@/lib/constants'
 
 // Utility functions
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { debug } from 'console'
 
 export default function CompactFacturaViewPage({
   params,
@@ -85,7 +84,7 @@ export default function CompactFacturaViewPage({
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             line-height: 1.2;
             width: 60mm;
             font-weight: bold;
@@ -173,7 +172,7 @@ export default function CompactFacturaViewPage({
       )
       .join('')
 
-    const date = new Date(factura.fecha)
+    const date = new Date()
     const formattedDate = date.toLocaleDateString('es-CO', {
       day: 'numeric',
       month: 'long',
@@ -257,15 +256,15 @@ export default function CompactFacturaViewPage({
       .map(
         (item) => `
   <tr style="height: 2px;">
-    <td style="font-size: 15px; padding: 1px;">${item.name}</td>
-    <td style="font-size: 15px; padding: 1px;">${item.type}</td>
-    <td style="font-size: 15px; padding: 1px;" class="text-right">${
+    <td style="font-size: 14px; padding: 1px;">${item.name}</td>
+    <td style="font-size: 14px; padding: 1px;">${item.type}</td>
+    <td style="font-size: 14px; padding: 1px;" class="text-right">${
       item.quantity
     }</td>
-    <td style="font-size: 15px; padding: 1px;" class="text-right">${formatCurrency(
+    <td style="font-size: 14px; padding: 1px;" class="text-right">${formatCurrency(
       item.price
     )}</td>
-    <td style="font-size: 15px; padding: 1px;" class="text-right">${formatCurrency(
+    <td style="font-size: 14px; padding: 1px;" class="text-right">${formatCurrency(
       item.quantity * item.price
     )}</td>
   </tr>
@@ -287,7 +286,7 @@ export default function CompactFacturaViewPage({
         }
         body { 
           font-family: Arial, sans-serif; 
-          font-size: 20px; 
+          font-size: 14px; 
           line-height: 1; 
           color: #333; 
           margin: 0; 
@@ -307,25 +306,25 @@ export default function CompactFacturaViewPage({
           margin-bottom: 5px;
         }
         .logo { 
-          width: 60px; 
+          width: 80px; 
           height: auto;
         }
         .company-info { 
           text-align: right; 
-          font-size: 7px;
+          font-size: 14px;
         }
         h1 { 
-          font-size: 24px; 
+          font-size: 16px; 
           margin: 0 0 2px; 
           color: #333;
         }
         h2 { 
-          font-size: 23px; 
+          font-size: 15px; 
           margin: 0 0 2px; 
           color: #333;
         }
         h3 { 
-          font-size: 22px; 
+          font-size: 14px; 
           margin: 0 0 2px; 
           color: #333;
         }
@@ -336,7 +335,7 @@ export default function CompactFacturaViewPage({
           width: 100%; 
           border-collapse: collapse; 
           margin-bottom: 5px;
-          font-size: 6px;
+          font-size: 14px;
         }
         th, td { 
           height: 2px;
@@ -364,7 +363,7 @@ export default function CompactFacturaViewPage({
           left: 0;
           right: 0;
           text-align: center; 
-          font-size: 20px; 
+          font-size: 14px; 
           color: #666;
           padding-top: 3px;
           border-top: 0.5px solid #eee;
@@ -413,7 +412,7 @@ export default function CompactFacturaViewPage({
         <div class="details-section">
           <div class="details-column">
             <h2>Factura #${factura.id_factura}</h2>
-            <p>Fecha: ${formatDate(new Date(factura.fecha))}</p>
+            <p>Fecha: ${formatDate(new Date())}</p>
           </div>
           <div class="details-column">
             <h3>Cliente</h3>
@@ -442,11 +441,11 @@ export default function CompactFacturaViewPage({
         <table>
           <thead>
             <tr style="height: 2px;">
-              <th style="width: 35%; font-size: 20px0;">Descripción</th>
-              <th style="width: 15%; font-size: 20px;">Tipo</th>
-              <th style="width: 15%; font-size: 20px;" class="text-right">Cantidad</th>
-              <th style="width: 15%; font-size: 20px;" class="text-right">Precio Unitario</th>
-              <th style="width: 20%; font-size: 20px;" class="text-right">Total</th>
+              <th style="width: 35%; font-size: 14px;">Descripción</th>
+              <th style="width: 15%; font-size: 14px;">Tipo</th>
+              <th style="width: 15%; font-size: 14px;" class="text-right">Cantidad</th>
+              <th style="width: 15%; font-size: 14px;" class="text-right">Precio Unitario</th>
+              <th style="width: 20%; font-size: 14px;" class="text-right">Total</th>
             </tr>
           </thead>
           <tbody>                                                             
@@ -454,32 +453,32 @@ export default function CompactFacturaViewPage({
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="4" class="text-right" style="font-size: 20px;"><strong>Valor:</strong></td>
-              <td class="text-right" style="font-size: 20px;">${formatCurrency(
+              <td colspan="4" class="text-right" style="font-size: 14px;"><strong>Valor:</strong></td>
+              <td class="text-right" style="font-size: 16px;">${formatCurrency(
                 Number(factura.descuento) + Number(factura.subtotal)
               )}</td>
             </tr>
             <tr>
-              <td colspan="4" class="text-right" style="font-size: 20px;"><strong>Descuento:</strong></td>
-              <td class="text-right" style="font-size: 20px;">${formatCurrency(
+              <td colspan="4" class="text-right" style="font-size: 14px;"><strong>Descuento:</strong></td>
+              <td class="text-right" style="font-size: 14px;">${formatCurrency(
                 Number(factura.descuento)
               )}</td>
             </tr>
             <tr>
-              <td colspan="4" class="text-right" style="font-size: 20px;"><strong>Subtotal:</strong></td>
-              <td class="text-right" style="font-size: 20px;">${formatCurrency(
+              <td colspan="4" class="text-right" style="font-size: 14px;"><strong>Subtotal:</strong></td>
+              <td class="text-right" style="font-size: 14px;">${formatCurrency(
                 Number(factura.subtotal)
               )}</td>
             </tr>
             <tr>
-              <td colspan="4" class="text-right" style="font-size: 20px;"><strong>IVA:</strong></td>
-              <td class="text-right" style="font-size: 20px;">${formatCurrency(
+              <td colspan="4" class="text-right" style="font-size: 14px;"><strong>IVA:</strong></td>
+              <td class="text-right" style="font-size: 14px;">${formatCurrency(
                 Number(factura.iva)
               )}</td>
             </tr>
             <tr class="total">
-              <td colspan="4" class="text-right" style="font-size: 20px;"><strong>Total:</strong></td>
-              <td class="text-right" style="font-size: 20px;">${formatCurrency(
+              <td colspan="4" class="text-right" style="font-size: 14px;"><strong>Total:</strong></td>
+              <td class="text-right" style="font-size: 14px;">${formatCurrency(
                 Number(factura.total)
               )}</td>
             </tr>
@@ -499,26 +498,26 @@ export default function CompactFacturaViewPage({
             <table>
               <thead>
                 <tr>
-                  <th style="font-size: 20px;">Método de Pago</th>
-                  <th style="font-size: 20px;" class="text-right">Monto</th>
+                  <th style="font-size: 14px;">Método de Pago</th>
+                  <th style="font-size: 14px;" class="text-right">Monto</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style="font-size: 20px;">Efectivo</td>
-                  <td style="font-size: 20px;" class="text-right">${formatCurrency(
+                  <td style="font-size: 14px;">Efectivo</td>
+                  <td style="font-size: 14px;" class="text-right">${formatCurrency(
                     Number(factura.pago_efectivo)
                   )}</td>
                 </tr>
                 <tr>
-                  <td style="font-size: 20px;">Tarjeta</td>
-                  <td style="font-size: 20px;" class="text-right">${formatCurrency(
+                  <td style="font-size: 14px;">Tarjeta</td>
+                  <td style="font-size: 14px;" class="text-right">${formatCurrency(
                     Number(factura.pago_tarjeta)
                   )}</td>
                 </tr>
                 <tr>
-                  <td style="font-size: 20px;">Transferencia</td>
-                  <td style="font-size: 20px;" class="text-right">${formatCurrency(
+                  <td style="font-size: 14px;">Transferencia</td>
+                  <td style="font-size: 14px;" class="text-right">${formatCurrency(
                     Number(factura.pago_transferencia)
                   )}</td>
                 </tr>
