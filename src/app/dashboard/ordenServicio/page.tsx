@@ -20,7 +20,7 @@ export default function Page() {
 
   const query = searchParams.get('query') || ''
   const currentPage = Number(searchParams.get('page')) || 1
-  const limit = Number(searchParams.get('limit')) || 10
+  const limit = Number(searchParams.get('limit')) || 30
 
   useEffect(() => {
     const fetchPages = async () => {

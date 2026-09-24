@@ -271,7 +271,7 @@ export default function CompactQuotationPage() {
           @media print {
             body * {
               visibility: hidden;
-              font-size: 12px;
+              font-size: 14px;
             }
             .print-only,
             .print-only * {
@@ -672,7 +672,7 @@ export default function CompactQuotationPage() {
         <div className="print-only">
           <div className="text-xs">
             <div className="flex justify-between items-center mb-2">
-              <img src={COMPANY_INFO.logo} alt="Logo" className="w-1/4" />
+              <img src={COMPANY_INFO.logo} alt="Logo" className="w-1/5" />
               <div className="text-right">
                 <h1 className="text-sm font-bold">{COMPANY_INFO.name}</h1>
                 <p>

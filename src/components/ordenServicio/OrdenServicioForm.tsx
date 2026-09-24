@@ -468,6 +468,7 @@ export default function OrdenServicioForm({
         <FormProvider {...form}>
           <Form {...form}>
             <form
+              id="orden-servicio-form"
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-4"
             >
