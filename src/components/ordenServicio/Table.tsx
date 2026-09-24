@@ -65,8 +65,19 @@ export default function EnhancedOrdenesServicioTable({
       setIsLoading(true)
       try {
         const data = await fetchFilteredOrdenes(query, currentPage, limit)
-        console.log(data);
-        setOrdenes(data)
+
+        const prioridad = {
+          PENDIENTE: 1,
+          EN_PROCESO: 2,
+          COMPLETADO: 3,
+          CANCELADO: 4,
+        }
+
+        const ordenes = [...data].sort(
+          (a, b) => (prioridad[a.estado] ?? 99) - (prioridad[b.estado] ?? 99)
+        )
+
+        setOrdenes(ordenes)
       } catch (error) {
         console.error('Error fetching Ordenes:', error)
         toast({
