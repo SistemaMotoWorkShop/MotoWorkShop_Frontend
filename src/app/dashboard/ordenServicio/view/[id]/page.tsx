@@ -311,12 +311,24 @@ export default function CompactPrintServiceOrderView() {
   return (
     <div className="container mx-auto py-4 px-4 max-w-4xl">
       <div className="print:hidden mb-4 flex justify-between items-center">
-        <Button
-          variant="outline"
-          onClick={() => router.push('/dashboard/ordenServicio')}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Volver
-        </Button>
+        <div className="flex items-center gap-6">
+          <Button
+            variant="outline"
+            onClick={() => router.push('/dashboard/ordenServicio')}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" /> Volver
+          </Button>
+
+          <Button
+            variant="outline"
+            onClick={() =>
+              router.push(`/dashboard/ordenServicio/edit/${orden.id_orden_servicio}`)
+            }
+          >
+            Editar
+          </Button>
+        </div>
+
         <h1 className="text-2xl font-bold">
           Orden de Servicio #{orden.id_orden_servicio}
         </h1>
@@ -411,6 +423,7 @@ export default function CompactPrintServiceOrderView() {
         @media print {
           body * {
             visibility: hidden;
+            font-size: 14px;
           }
           .container,
           .container * {
@@ -437,7 +450,7 @@ export default function CompactPrintServiceOrderView() {
           margin: 10mm;
         }
         body {
-          font-size: 12px;
+          font-size: 14px;
         }
       `}</style>
     </div>
