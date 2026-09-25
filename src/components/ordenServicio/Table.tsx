@@ -62,37 +62,25 @@ export default function EnhancedOrdenesServicioTable({
 
   useEffect(() => {
     const fetchOrdenes = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
-        const data = await fetchFilteredOrdenes(query, currentPage, limit)
-
-        const prioridad = {
-          PENDIENTE: 1,
-          EN_PROCESO: 2,
-          COMPLETADO: 3,
-          CANCELADO: 4,
-        }
-
-        const ordenes = [...data].sort(
-          (a, b) => (prioridad[a.estado] ?? 99) - (prioridad[b.estado] ?? 99)
-        )
-
-        setOrdenes(ordenes)
+        const data = await fetchFilteredOrdenes(query, currentPage, limit);
+        setOrdenes(data);
       } catch (error) {
-        console.error('Error fetching Ordenes:', error)
+        console.error("Error fetching Ordenes:", error);
         toast({
-          title: 'Error',
+          title: "Error",
           description:
-            'No se pudieron cargar las órdenes de servicio. Por favor, intente de nuevo.',
-          variant: 'destructive',
-        })
+            "No se pudieron cargar las órdenes de servicio. Por favor, intente de nuevo.",
+          variant: "destructive",
+        });
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
-    fetchOrdenes()
-  }, [query, currentPage, limit, toast])
-
+    };
+    fetchOrdenes();
+  }, [query, currentPage, limit, toast]);
+  
   const handleSort = (key: string) => {
     setSortConfig((current) => {
       if (current?.key === key) {
@@ -106,15 +94,52 @@ export default function EnhancedOrdenesServicioTable({
     })
   }
 
+  const getNestedValue = (item: OrdenServicio, path: string) => {
+    return path.split(".").reduce((acc: any, part) => acc?.[part], item);
+  };
+
+  const getSortValue = (item: OrdenServicio, key: string) => {
+      if (key === "estado") {
+        return (
+          {
+            PENDIENTE: 0,
+            EN_PROCESO: 1,
+            COMPLETADO: 2,
+            CANCELADO: 3,
+          }[item.estado] ?? 99
+        );
+      }
+  
+      if (key === "fecha") {
+        return new Date(item.fecha).getTime();
+      }
+  
+      if (key === "id_orden_servicio") {
+        return Number(item.id_orden_servicio);
+      }
+  
+      return String(getNestedValue(item, key) ?? "");
+    };
+
   const sortedOrdenes = [...ordenes].sort((a, b) => {
-    if (!sortConfig) return 0
-    const { key, direction } = sortConfig
-    if (a[key as keyof OrdenServicio] < b[key as keyof OrdenServicio])
-      return direction === 'ascending' ? -1 : 1
-    if (a[key as keyof OrdenServicio] > b[key as keyof OrdenServicio])
-      return direction === 'ascending' ? 1 : -1
-    return 0
-  })
+    if (!sortConfig) {
+      const pendingPriority =
+        (getSortValue(a, "estado") as number) -
+        (getSortValue(b, "estado") as number);
+
+      if (pendingPriority !== 0) return pendingPriority;
+
+      return Number(b.id_orden_servicio) - Number(a.id_orden_servicio);
+    }
+
+    const { key, direction } = sortConfig;
+    const aValue = getSortValue(a, key);
+    const bValue = getSortValue(b, key);
+
+    if (aValue < bValue) return direction === "ascending" ? -1 : 1;
+    if (aValue > bValue) return direction === "ascending" ? 1 : -1;
+    return 0;
+  });
 
   const getStatusBadge = (status: string) => {
     const statusStyles = {
